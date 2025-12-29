@@ -8,6 +8,11 @@ import java.time.LocalDate
 // ========================================
 // TRIGGER DAO
 // ========================================
+data class ThoughtCount(
+    val automaticThought: String,
+    val count: Int
+)
+
 @Dao
 interface TriggerDao {
     @Query("SELECT * FROM trigger_entries WHERE date = :date ORDER BY timestamp DESC")
@@ -17,7 +22,7 @@ interface TriggerDao {
     fun getTriggersInRange(startDate: LocalDate, endDate: LocalDate): Flow<List<TriggerEntry>>
 
     @Query("SELECT automaticThought, COUNT(*) as count FROM trigger_entries WHERE date >= :since GROUP BY automaticThought ORDER BY count DESC")
-    suspend fun getRepetitiveThoughts(since: LocalDate): Map<String, Int>
+    suspend fun getRepetitiveThoughts(since: LocalDate): List<ThoughtCount>
 
     @Insert
     suspend fun insert(entry: TriggerEntry)
