@@ -48,12 +48,20 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/*.kotlin_module"
         }
     }
 }
@@ -65,13 +73,16 @@ dependencies {
     // MultiDex support
     implementation("androidx.multidex:multidex:2.0.1")
 
+    // Kotlin stdlib - explicit version to avoid conflicts
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
 
-    // Compose
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    // Compose BOM - manages all Compose versions
+    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -99,8 +110,10 @@ dependencies {
     // Charts (MPAndroidChart)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
-    // PDF Generation
-    implementation("com.itextpdf:itext7-core:7.2.5")
+    // PDF Generation - exclude conflicting dependencies
+    implementation("com.itextpdf:itext7-core:7.2.5") {
+        exclude(group = "org.bouncycastle")
+    }
 
     // DataStore (preferences)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -112,7 +125,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
