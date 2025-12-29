@@ -19,6 +19,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -59,6 +61,9 @@ android {
 dependencies {
     // Core Library Desugaring (for Java 8+ API on Android < 8)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+
+    // MultiDex support
+    implementation("androidx.multidex:multidex:2.0.1")
 
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
